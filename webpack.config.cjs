@@ -8,10 +8,13 @@ const JavaScriptObfuscator = require('webpack-obfuscator');
 
 module.exports = {
   mode: 'production',
-  entry: './ad_350x250.js',
+  entry: './src/index.js',
   output: {
     filename: 'bundle.min.js',
     path: path.resolve(__dirname, 'dist')
+  },
+  resolve: {
+    extensions: ['.js', '.mjs'],
   },
   module: {
     rules: [{
@@ -38,10 +41,14 @@ module.exports = {
     new CleanWebpackPlugin(),
     new JavaScriptObfuscator( {
       rotateStringArray: true
-    }, ['excluded_bundle_name.js'])
+    }, [])
   ],
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()],
-  }
+  },
+  watch: false,
+  watchOptions: {
+    ignored: '**/node_modules',
+  },
 };

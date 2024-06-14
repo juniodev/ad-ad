@@ -1,27 +1,159 @@
-const axios = require('axios');
+import {
+  infoIcon,
+  closeIcon,
+  nextIcon
+} from './icons/svgs.js';
 
-(async () => {
-  try {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1');
-    const postData = response.data;
-
-    // Modificar o título da página
-    document.title = postData.title;
-
-    // Modificar a meta description
-    const metaDescriptionTag = document.querySelector('meta[name="description"]');
-    if (metaDescriptionTag) {
-      metaDescriptionTag.setAttribute('content', postData.body);
-    } else {
-      // Se não existir uma meta tag de description, você pode criar uma
-      const newMetaTag = document.createElement('meta');
-      newMetaTag.setAttribute('name', 'description');
-      newMetaTag.setAttribute('content', postData.body);
-      document.head.appendChild(newMetaTag);
-    }
-
-    console.log('Dados da postagem:', postData);
-  } catch (error) {
-    console.error('Erro ao fazer requisição:', error.message);
+class AdBox {
+  constructor(options = {}) {
+    this.options = options;
   }
-})();
+
+  _createBox() {
+    
+    let box = document.createElement('div')
+
+    Object.assign(box.style, {
+      width: this.options.width || '300px',
+      height: this.options.height || '250px',
+      background: this.options.background || 'white',
+      boxSizing: 'border-box',
+      position: 'relative',
+      border: '1px solid rgba(0,0,0,.1)',
+      margin: 'auto',
+      overflow: 'hidden'
+    });
+
+    const div = document.createElement('div');
+    Object.assign(div.style, {
+      height: '75%',
+      width: '100%'
+    });
+
+    const img = document.createElement('img');
+    Object.assign(img.style, {
+      height: '100%',
+      width: '100%',
+      objectFit: 'cover'
+    });
+    img.src = this.options.src || '';
+
+    div.appendChild(img);
+
+    const options = this._options();
+    const details = this._details();
+
+    box.appendChild(div);
+    box.appendChild(options);
+    box.appendChild(details);
+    return box;
+  }
+
+  _options() {
+    const options = document.createElement('div');
+    Object.assign(options.style, {
+      height: '25px',
+      margin: '2px',
+      position: 'absolute',
+      top: '0',
+      right: '0',
+      display: 'flex',
+      color: 'rgba(0,0,0,.5)',
+      overflow: 'hidden'
+    });
+
+    const close = this._createOptionBtn(closeIcon, () => {
+      alert('close ad');
+    });
+
+    const help = this._createOptionBtn(infoIcon);
+
+    options.appendChild(help);
+    options.appendChild(close);
+    return options;
+  }
+
+  _details() {
+    const details = document.createElement('div');
+    Object.assign(details.style, {
+      width: '100%',
+      height: '25%',
+      padding: '6px 10px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      boxSizing: 'border-box'
+    });
+
+    const texts = document.createElement('div');
+    Object.assign(texts.style, {
+      height: '100%'
+    });
+
+    const title = document.createElement('h2');
+    title.textContent = 'Fortune tiger';
+    Object.assign(title.style, {
+      margin: '0',
+      color: '#333'
+    });
+    texts.appendChild(title);
+
+    const siteName = document.createElement('span');
+    siteName.textContent = 'galera.bet';
+    siteName.style.color = 'rgba(0,0,0,.7)';
+    texts.appendChild(siteName);
+
+    const action = document.createElement('div');
+    Object.assign(action.style, {
+      width: '40px',
+      height: '40px',
+      borderRadius: '100%',
+      background: '#333',
+      fontSize: '1.8rem',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      color: 'white'
+    });
+    action.innerHTML = nextIcon;
+
+    action.addEventListener('click', () => {
+      window.open('https://galera.bet', '_blank');
+    });
+
+    details.appendChild(texts);
+    details.appendChild(action);
+    return details;
+  }
+
+  _createOptionBtn(icon, onFunction = () => {}) {
+    const btn = document.createElement('div');
+    Object.assign(btn.style, {
+      height: '13px',
+      width: '13px',
+      padding: '2px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'white'
+    });
+    btn.innerHTML = `
+    <svg viewBox="0 0 1024 1024" fill="currentColor" height="1em" width="1em">${icon}</svg>
+    `;; return btn;
+  }
+
+  render() {
+    return this._createBox();
+  }
+}
+
+const ad = new AdBox( {
+  src: 'https://i.ibb.co/yS9zBkk/images.jpg'
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const element = ad.render();
+  const container = document.getElementById('adby_ad')
+  container.appendChild(element)
+});
