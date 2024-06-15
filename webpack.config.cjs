@@ -5,16 +5,44 @@ const {
 const TerserPlugin = require('terser-webpack-plugin');
 const JavaScriptObfuscator = require('webpack-obfuscator');
 
+const production = process.env.NODE_ENV
+
+let options = {
+  plugins: [
+    new CleanWebpackPlugin(),
+  ]
+}
+
+if (!production) {
+  options = {
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    }
+  }
+}
+
+if (production) {
+  options = {
+    ...options,
+    plugins: [
+      ...options.plugins,
+      new JavaScriptObfuscator( {
+        rotateStringArray: true
+      }, [])
+    ]
+  }
+}
 
 module.exports = {
-  mode: 'production',
+  mode: production ? 'production': 'development',
   entry: './src/index.js',
   output: {
     filename: 'bundle.min.js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.js', '.mjs'],
+    extensions: ['.js'],
   },
   module: {
     rules: [{
@@ -37,17 +65,7 @@ module.exports = {
       }
     }]
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new JavaScriptObfuscator( {
-      rotateStringArray: true
-    }, [])
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()],
-  },
-  watch: false,
+  ...options,
   watchOptions: {
     ignored: '**/node_modules',
   },

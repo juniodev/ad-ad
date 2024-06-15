@@ -5,8 +5,10 @@ import {
 } from './icons/svgs.js';
 
 class AdBox {
+  
   constructor(options = {}) {
     this.options = options;
+    this.element = this._createBox()
   }
 
   _createBox() {
@@ -109,7 +111,7 @@ class AdBox {
       height: '40px',
       borderRadius: '100%',
       background: '#333',
-      fontSize: '1.8rem',
+      fontSize: '1.3rem',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -144,16 +146,13 @@ class AdBox {
   }
 
   render() {
-    return this._createBox();
+   const ctn = document.getElementById('adby_ad')
+   ctn.innerHTML = ''
+   ctn.appendChild(this.element)
   }
 }
 
 const ad = new AdBox( {
   src: 'https://i.ibb.co/yS9zBkk/images.jpg'
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-  const element = ad.render();
-  const container = document.getElementById('adby_ad')
-  container.appendChild(element)
-});
+ad.render()

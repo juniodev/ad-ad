@@ -42,6 +42,14 @@
           
         </div>
         
-       <script src="/dist/bundle.min.js" type="text/javascript" charset="utf-8"></script>
+       <script async src="dist/bundle.min.js" type="text/javascript" charset="utf-8"></script>
+       
+       <script type="text/javascript" charset="utf-8">
+         window.addEventListener("beforeunload", function(event) {
+    // Exemplo simples de mensagem de confirmação
+    event.returnValue = "Tem certeza que deseja sair?";
+});
+
+       </script>
     </body>
 </html>
