@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Anúncio Intersticial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #interstitialAd {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        #interstitialAdContent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .box {
+          height: 300px;
+          width: 100%;
+          background: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Página de Exemplo</h1>
+<p><a href="https://www.example.com">Clique aqui para visitar Example.com</a></p>
+
+<a href="index.html">Google</a>
+
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+
+<div id="interstitialAd">
+    <div id="interstitialAdContent">
+        <h2>Anúncio Intersticial</h2>
+        <p>Este é o seu anúncio.</p>
+        <button class="close-btn" onclick="closeAd()">Fechar Anúncio</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                showAd(link.href);
+            });
+        });
+    });
+
+    function showAd(url) {
+        var interstitialAd = document.getElementById('interstitialAd');
+        interstitialAd.style.display = 'block';
+        
+        // Armazenar o URL para redirecionar após o anúncio
+        interstitialAd.dataset.url = url;
+    }
+
+    function closeAd() {
+        var interstitialAd = document.getElementById('interstitialAd');
+        var url = interstitialAd.dataset.url;
+        interstitialAd.style.display = 'none';
+        
+        // Redirecionar para o URL armazenado
+        window.location.href = url;
+    }
+</script>
+
+</body>
+</html>

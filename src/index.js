@@ -4,16 +4,23 @@ import {
   nextIcon
 } from './icons/svgs.js';
 
-class AdBox {
-  
+import AnalyticsBrowser from './analytics/browser.js'
+
+class AdBox extends AnalyticsBrowser {
   constructor(options = {}) {
+    super();
     this.options = options;
-    this.element = this._createBox()
+    this.element = this._createBox();
+    this._teste()
+  }
+
+  _teste() {
+    const analytics = new AnalyticsBrowser()
+    console.log(analytics.getClient())
   }
 
   _createBox() {
-    
-    let box = document.createElement('div')
+    let box = document.createElement('div');
 
     Object.assign(box.style, {
       width: this.options.width || '300px',
@@ -142,17 +149,21 @@ class AdBox {
     });
     btn.innerHTML = `
     <svg viewBox="0 0 1024 1024" fill="currentColor" height="1em" width="1em">${icon}</svg>
-    `;; return btn;
+    `;
+    return btn;
   }
 
   render() {
-   const ctn = document.getElementById('adby_ad')
-   ctn.innerHTML = ''
-   ctn.appendChild(this.element)
+    const ctn = document.getElementById('adby_ad');
+    ctn.innerHTML = '';
+    ctn.appendChild(this.element);
+
+    console.log(this.getClient());
+    // console.log(this.getNavigator());
   }
 }
 
 const ad = new AdBox( {
   src: 'https://i.ibb.co/yS9zBkk/images.jpg'
 });
-ad.render()
+ad.render();

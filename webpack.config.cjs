@@ -1,20 +1,42 @@
 const path = require('path');
+const webpack = require('webpack')
 const {
   CleanWebpackPlugin
 } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const JavaScriptObfuscator = require('webpack-obfuscator');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+
+const DotEnv = require('dotenv-webpack')
+const env = require('dotenv')
+env.config()
 
 const production = process.env.NODE_ENV
 
 let options = {
   plugins: [
     new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin( {
+      template: './index.html', // Caminho para o seu arquivo index.html
+      filename: 'index.html',
+    }),
+    new DotEnv( {
+      path: '.env',
+      defaultEnv: production ? 'production': 'development',
+      systemvars: false,
+    }),
   ]
 }
 
 if (!production) {
   options = {
+    ...options,
+    devServer: {
+      
+      compress: true,
+      port: 9000
+    },
     optimization: {
       minimize: true,
       minimizer: [new TerserPlugin()],
@@ -36,13 +58,16 @@ if (production) {
 
 module.exports = {
   mode: production ? 'production': 'development',
-  entry: './src/index.js',
+  entry: {
+    banner: './src/index.js',
+    intertitial: './src/intertitial/index.js'
+  },
   output: {
-    filename: 'bundle.min.js',
+    filename: '[name].min.js',
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.js']
   },
   module: {
     rules: [{
@@ -67,6 +92,6 @@ module.exports = {
   },
   ...options,
   watchOptions: {
-    ignored: '**/node_modules',
-  },
+    ignored: ['**/node_modules'],
+  }
 };
