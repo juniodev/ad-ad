@@ -15,8 +15,8 @@ class AdBox extends AnalyticsBrowser {
   }
 
   _teste() {
-    const analytics = new AnalyticsBrowser()
-    console.log(analytics.getClient())
+    //const analytics = new AnalyticsBrowser()
+    //console.log(analytics.getClient())
   }
 
   _createBox() {
@@ -157,13 +157,11 @@ class AdBox extends AnalyticsBrowser {
     const ctn = document.getElementById('adby_ad');
     ctn.innerHTML = '';
     ctn.appendChild(this.element);
-
-    console.log(this.getClient());
-    // console.log(this.getNavigator());
   }
 }
 
 const ad = new AdBox( {
   src: 'https://i.ibb.co/yS9zBkk/images.jpg'
-});
+})
+
 ad.render();

@@ -17,15 +17,11 @@ const production = process.env.NODE_ENV
 let options = {
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin( {
-      template: './index.html', // Caminho para o seu arquivo index.html
-      filename: 'index.html',
-    }),
     new DotEnv( {
       path: '.env',
       defaultEnv: production ? 'production': 'development',
       systemvars: false,
-    }),
+    })
   ]
 }
 
@@ -33,20 +29,37 @@ if (!production) {
   options = {
     ...options,
     devServer: {
-      
       compress: true,
       port: 9000
     },
-    optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin()],
-    }
+    plugins: [
+      ...options.plugins,
+      new HtmlWebpackPlugin( {
+        template: './index.html',
+        filename: 'index.html',
+      }),
+    ]
   }
 }
 
 if (production) {
   options = {
     ...options,
+   optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin( {
+          extractComments: true,
+          minify: TerserPlugin.uglifyJsMinify,
+          terserOptions: {
+            ie8: true,
+            compress: {
+              pure_funcs: ['console.log']
+            }
+          }
+        })
+      ]
+    },
     plugins: [
       ...options.plugins,
       new JavaScriptObfuscator( {

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -37,7 +38,7 @@
             border: none;
             cursor: pointer;
         }
-        
+
         .box {
           height: 300px;
           width: 100%;
@@ -82,7 +83,7 @@
     function showAd(url) {
         var interstitialAd = document.getElementById('interstitialAd');
         interstitialAd.style.display = 'block';
-        
+
         // Armazenar o URL para redirecionar após o anúncio
         interstitialAd.dataset.url = url;
     }
@@ -91,7 +92,7 @@
         var interstitialAd = document.getElementById('interstitialAd');
         var url = interstitialAd.dataset.url;
         interstitialAd.style.display = 'none';
-        
+
         // Redirecionar para o URL armazenado
         window.location.href = url;
     }
